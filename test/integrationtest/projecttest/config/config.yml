@@ -106,5 +106,4 @@ commerce:
 commerce.contrib:
   cart:
     redis:
-      enabled: true
       keyPrefix: "cart:"
