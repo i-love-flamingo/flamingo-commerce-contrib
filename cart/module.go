@@ -3,7 +3,6 @@ package cart
 import (
 	"flamingo.me/dingo"
 	"flamingo.me/flamingo-commerce-contrib/cart/infrastructure"
-	"flamingo.me/flamingo-commerce/v3/cart"
 	cartInfrastructure "flamingo.me/flamingo-commerce/v3/cart/infrastructure"
 	"flamingo.me/flamingo/v3/core/healthcheck/domain/healthcheck"
 )
@@ -18,13 +17,6 @@ func (m *Module) Configure(injector *dingo.Injector) {
 	injector.Bind(new(infrastructure.CartSerializer)).To(new(infrastructure.GobSerializer))
 	injector.Override(new(cartInfrastructure.CartStorage), "").To(new(infrastructure.RedisStorage)).AsEagerSingleton()
 	injector.BindMap(new(healthcheck.Status), "cart.storage.redis").To(new(infrastructure.RedisStorage))
-}
-
-// Depends adds our dependencies
-func (*Module) Depends() []dingo.Module {
-	return []dingo.Module{
-		new(cart.Module),
-	}
 }
 
 // CueConfig defines the cart module configuration
