@@ -28,16 +28,16 @@ func LoadGraphQL(t *testing.T, name string, replacements map[string]string) stri
 		t.Fatal(err)
 	}
 
-	r := make([]string, replacementScale*len(replacements))
+	repl := make([]string, replacementScale*len(replacements))
 	i := 0
 
 	for key, val := range replacements {
-		r[i] = fmt.Sprintf("###%s###", key)
-		r[i+1] = val
+		repl[i] = fmt.Sprintf("###%s###", key)
+		repl[i+1] = val
 		i += 2
 	}
 
-	replacer := strings.NewReplacer(r...)
+	replacer := strings.NewReplacer(repl...)
 
 	return replacer.Replace(string(content))
 }
@@ -49,7 +49,7 @@ func PrepareCart(t *testing.T, e *httpexpect.Expect) {
 }
 
 // PrepareCartWithPaymentSelection adds a simple product via graphQl
-func PrepareCartWithPaymentSelection(t *testing.T, e *httpexpect.Expect, paymentMethod string, marketPlaceCode *string) {
+func PrepareCartWithPaymentSelection(t *testing.T, expect *httpexpect.Expect, paymentMethod string, marketPlaceCode *string) {
 	t.Helper()
 
 	code := "fake_simple"
@@ -57,8 +57,8 @@ func PrepareCartWithPaymentSelection(t *testing.T, e *httpexpect.Expect, payment
 		code = *marketPlaceCode
 	}
 
-	helper.GraphQlRequest(t, e, LoadGraphQL(t, "cart_add_to_cart", map[string]string{"MARKETPLACE_CODE": code, "DELIVERY_CODE": "delivery"})).Expect().Status(http.StatusOK)
-	helper.GraphQlRequest(t, e, LoadGraphQL(t, "update_payment_selection", map[string]string{"PAYMENT_METHOD": paymentMethod})).Expect().Status(http.StatusOK)
+	helper.GraphQlRequest(t, expect, LoadGraphQL(t, "cart_add_to_cart", map[string]string{"MARKETPLACE_CODE": code, "DELIVERY_CODE": "delivery"})).Expect().Status(http.StatusOK)
+	helper.GraphQlRequest(t, expect, LoadGraphQL(t, "update_payment_selection", map[string]string{"PAYMENT_METHOD": paymentMethod})).Expect().Status(http.StatusOK)
 }
 
 func GetValue(response *httpexpect.Response, queryName, key string) *httpexpect.Value {
@@ -76,6 +76,7 @@ func AssertResponseForExpectedState(t *testing.T, response *httpexpect.Response,
 	require.NoError(t, json.Unmarshal([]byte(response.Body().Raw()), &data))
 
 	var theData interface{}
+
 	var ok bool
 
 	if theData, ok = data["data"]; !ok || theData == nil {
@@ -83,7 +84,11 @@ func AssertResponseForExpectedState(t *testing.T, response *httpexpect.Response,
 		return
 	}
 
-	data = theData.(map[string]interface{})
+	data, ok = theData.(map[string]interface{})
+	if !ok {
+		t.Fatalf("no data in response: %s", response.Body().Raw())
+		return
+	}
 
 	if diff := cmp.Diff(data, expectedState); diff != "" {
 		t.Errorf("diff mismatch (-want +got):\\n%s", diff)
