@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	flamingo.me/dingo v0.2.10
-	flamingo.me/flamingo-commerce/v3 v3.6.1-0.20230411110610-7768d2a18a51
+	flamingo.me/flamingo-commerce/v3 v3.6.1-0.20230412150446-30fb66838e06
 	flamingo.me/flamingo/v3 v3.4.0
 	flamingo.me/form v1.1.1
 	flamingo.me/graphql v1.9.0
