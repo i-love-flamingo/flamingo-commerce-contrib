@@ -8,7 +8,7 @@ import (
 	"os"
 	"testing"
 
-	"flamingo.me/flamingo-commerce-contrib/test/integrationtest/projecttest/helper"
+	"flamingo.me/flamingo-commerce-contrib/cart/redis/integrationtest/helper"
 )
 
 var FlamingoURL string
@@ -16,9 +16,13 @@ var FlamingoURL string
 // TestMain used for setup and teardown
 func TestMain(m *testing.M) {
 	flag.Parse()
+
 	info := helper.BootupDemoProject("../../config/")
 	FlamingoURL = info.BaseURL
+
 	result := m.Run()
+
 	info.ShutdownFunc()
+
 	os.Exit(result)
 }

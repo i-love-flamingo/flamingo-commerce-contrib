@@ -8,7 +8,7 @@ import (
 	"os/exec"
 	"testing"
 
-	"flamingo.me/flamingo-commerce-contrib/cart/infrastructure"
+	"flamingo.me/flamingo-commerce-contrib/cart/redis/infrastructure"
 	cartDomain "flamingo.me/flamingo-commerce/v3/cart/domain/cart"
 	"github.com/go-redis/redis/v9"
 	"github.com/go-test/deep"

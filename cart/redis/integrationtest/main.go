@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"os"
 
-	"flamingo.me/flamingo-commerce-contrib/test/integrationtest/projecttest/helper"
+	"flamingo.me/flamingo-commerce-contrib/cart/redis/integrationtest/helper"
 )
 
 func main() {
 	if os.Getenv("RUN") == "1" {
-		info := helper.BootupDemoProject("../config")
+		info := helper.BootupDemoProject("../../config/")
 		<-info.Running
 		fmt.Println("Server exited")
 	} else {

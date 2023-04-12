@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"flamingo.me/flamingo-commerce-contrib/test/graphql"
 	"github.com/gavv/httpexpect/v2"
 
 	"flamingo.me/flamingo-commerce/v3/test/integrationtest"
@@ -15,13 +16,15 @@ import (
 )
 
 func Test_CartUpdateDeliveryAddresses(t *testing.T) {
+	t.Parallel()
+
 	baseURL := "http://" + FlamingoURL
-	e := integrationtest.NewHTTPExpect(t, baseURL)
+	expect := integrationtest.NewHTTPExpect(t, baseURL)
 
 	// check response of update delivery mutation
-	response := helper.GraphQlRequest(t, e, loadGraphQL(t, "update_delivery_addresses", nil)).Expect()
+	response := helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "update_delivery_addresses", nil)).Expect()
 	response.Status(http.StatusOK)
-	forms := getArray(response, "Commerce_Cart_UpdateDeliveryAddresses")
+	forms := graphql.GetArray(response, "Commerce_Cart_UpdateDeliveryAddresses")
 	forms.Length().Equal(3)
 
 	address := forms.Element(0).Object()
@@ -63,30 +66,32 @@ func Test_CartUpdateDeliveryAddresses(t *testing.T) {
 	validation.Value("fieldErrors").NotNull()
 
 	// check that deliveries are saved to cart
-	response = helper.GraphQlRequest(t, e, loadGraphQL(t, "cart_decorated_cart", nil)).Expect()
+	response = helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "cart_decorated_cart", nil)).Expect()
 	response.Status(http.StatusOK)
-	getValue(response, "Commerce_Cart_DecoratedCart", "cart").Object().Value("deliveries").Array().Length().Equal(2)
+	graphql.GetValue(response, "Commerce_Cart_DecoratedCart", "cart").Object().Value("deliveries").Array().Length().Equal(2)
 }
 
 func Test_CommerceCartUpdateDeliveryShippingOptions(t *testing.T) {
+	t.Parallel()
+
 	baseURL := "http://" + FlamingoURL
-	e := integrationtest.NewHTTPExpect(t, baseURL)
+	expect := integrationtest.NewHTTPExpect(t, baseURL)
 
 	// add some deliveries
-	response := helper.GraphQlRequest(t, e, loadGraphQL(t, "update_delivery_addresses", nil)).Expect()
+	response := helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "update_delivery_addresses", nil)).Expect()
 	response.Status(http.StatusOK)
-	forms := getArray(response, "Commerce_Cart_UpdateDeliveryAddresses")
+	forms := graphql.GetArray(response, "Commerce_Cart_UpdateDeliveryAddresses")
 	forms.Length().Equal(3)
 
 	// update shipping options
-	response = helper.GraphQlRequest(t, e, loadGraphQL(t, "update_delivery_shipping_options", nil)).Expect()
+	response = helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "update_delivery_shipping_options", nil)).Expect()
 	response.Status(http.StatusOK)
-	getValue(response, "Commerce_Cart_UpdateDeliveryShippingOptions", "processed").Boolean().Equal(true)
+	graphql.GetValue(response, "Commerce_Cart_UpdateDeliveryShippingOptions", "processed").Boolean().Equal(true)
 
 	// check cart
-	response = helper.GraphQlRequest(t, e, loadGraphQL(t, "cart_decorated_cart", nil)).Expect()
+	response = helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "cart_decorated_cart", nil)).Expect()
 	response.Status(http.StatusOK)
-	deliveries := getValue(response, "Commerce_Cart_DecoratedCart", "cart").Object().Value("deliveries").Array()
+	deliveries := graphql.GetValue(response, "Commerce_Cart_DecoratedCart", "cart").Object().Value("deliveries").Array()
 	deliveries.Length().Equal(2)
 	deliveries.Element(0).Object().Value("deliveryInfo").Object().Value("carrier").String().Equal("foo-carrier")
 	deliveries.Element(0).Object().Value("deliveryInfo").Object().Value("method").String().Equal("foo-method")
@@ -95,26 +100,30 @@ func Test_CommerceCartUpdateDeliveryShippingOptions(t *testing.T) {
 }
 
 func Test_CommerceCartClean(t *testing.T) {
+	t.Parallel()
+
 	baseURL := "http://" + FlamingoURL
-	e := integrationtest.NewHTTPExpect(t, baseURL)
+	expect := integrationtest.NewHTTPExpect(t, baseURL)
 
-	prepareCart(t, e)
+	graphql.PrepareCart(t, expect)
 
-	response := helper.GraphQlRequest(t, e, loadGraphQL(t, "cart_decorated_cart", nil)).Expect()
+	response := helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "cart_decorated_cart", nil)).Expect()
 	response.Status(http.StatusOK)
-	getValue(response, "Commerce_Cart_DecoratedCart", "cart").Object().Value("itemCount").Equal(1)
+	graphql.GetValue(response, "Commerce_Cart_DecoratedCart", "cart").Object().Value("itemCount").Equal(1)
 
-	helper.GraphQlRequest(t, e, loadGraphQL(t, "cart_clear", nil)).Expect().Status(http.StatusOK)
+	helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "cart_clear", nil)).Expect().Status(http.StatusOK)
 
-	response = helper.GraphQlRequest(t, e, loadGraphQL(t, "cart_decorated_cart", nil)).Expect().Status(http.StatusOK)
-	getValue(response, "Commerce_Cart_DecoratedCart", "cart").Object().Value("itemCount").Equal(0)
+	response = helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "cart_decorated_cart", nil)).Expect().Status(http.StatusOK)
+	graphql.GetValue(response, "Commerce_Cart_DecoratedCart", "cart").Object().Value("itemCount").Equal(0)
 }
 
 func Test_CommerceCartUpdateAdditionalData(t *testing.T) {
-	baseURL := "http://" + FlamingoURL
-	e := integrationtest.NewHTTPExpect(t, baseURL)
+	t.Parallel()
 
-	request := helper.GraphQlRequest(t, e, loadGraphQL(t, "cart_update_additional_data", nil))
+	baseURL := "http://" + FlamingoURL
+	expect := integrationtest.NewHTTPExpect(t, baseURL)
+
+	request := helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "cart_update_additional_data", nil))
 	response := request.Expect().Body()
 
 	expected := `{
@@ -138,16 +147,18 @@ func Test_CommerceCartUpdateAdditionalData(t *testing.T) {
 				   }
 				 }`
 
-	expected = spaceMap(expected)
+	expected = graphql.SpaceMap(expected)
 	response.Equal(expected)
 }
 
 func Test_CommerceCartUpdateDeliveriesAdditionalData(t *testing.T) {
-	baseURL := "http://" + FlamingoURL
-	e := integrationtest.NewHTTPExpect(t, baseURL)
+	t.Parallel()
 
-	prepareCartWithDeliveries(t, e)
-	request := helper.GraphQlRequest(t, e, loadGraphQL(t, "cart_update_deliveries_additional_data", nil))
+	baseURL := "http://" + FlamingoURL
+	expect := integrationtest.NewHTTPExpect(t, baseURL)
+
+	prepareCartWithDeliveries(t, expect)
+	request := helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "cart_update_deliveries_additional_data", nil))
 	response := request.Expect().Body()
 
 	expected := `{
@@ -193,15 +204,16 @@ func Test_CommerceCartUpdateDeliveriesAdditionalData(t *testing.T) {
 				   }
 				 }`
 
-	expected = spaceMap(expected)
+	expected = graphql.SpaceMap(expected)
 	response.Equal(expected)
 }
 
 // prepareCartWithDeliveries adds a simple product with different delivery codes via graphQl
 func prepareCartWithDeliveries(t *testing.T, e *httpexpect.Expect) {
 	t.Helper()
-	helper.GraphQlRequest(t, e, loadGraphQL(t, "cart_add_to_cart", map[string]string{"MARKETPLACE_CODE": "fake_simple", "DELIVERY_CODE": "delivery1"})).Expect().Status(http.StatusOK)
-	helper.GraphQlRequest(t, e, loadGraphQL(t, "cart_add_to_cart", map[string]string{"MARKETPLACE_CODE": "fake_simple", "DELIVERY_CODE": "delivery2"})).Expect().Status(http.StatusOK)
+
+	helper.GraphQlRequest(t, e, graphql.LoadGraphQL(t, "cart_add_to_cart", map[string]string{"MARKETPLACE_CODE": "fake_simple", "DELIVERY_CODE": "delivery1"})).Expect().Status(http.StatusOK)
+	helper.GraphQlRequest(t, e, graphql.LoadGraphQL(t, "cart_add_to_cart", map[string]string{"MARKETPLACE_CODE": "fake_simple", "DELIVERY_CODE": "delivery2"})).Expect().Status(http.StatusOK)
 }
 
 func TestAddBundleProductToCart(t *testing.T) {
@@ -209,8 +221,9 @@ func TestAddBundleProductToCart(t *testing.T) {
 
 	t.Run("add to cart bundle product", func(t *testing.T) {
 		t.Parallel()
-		e := httpexpect.New(t, "http://"+FlamingoURL)
-		response := helper.GraphQlRequest(t, e, loadGraphQL(t, "commerce_cart_AddBundleToCart", map[string]string{
+
+		expect := httpexpect.New(t, "http://"+FlamingoURL)
+		response := helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "commerce_cart_AddBundleToCart", map[string]string{
 			"MARKETPLACE_CODE":          "fake_bundle",
 			"DELIVERY_CODE":             "delivery",
 			"IDENTIFIER1":               "identifier1",
@@ -255,14 +268,15 @@ func TestAddBundleProductToCart(t *testing.T) {
 					  }
 					}`
 
-		expected = spaceMap(expected)
+		expected = graphql.SpaceMap(expected)
 		body.Equal(expected)
 	})
 
 	t.Run("add to cart bundle product, selected variant do not exists", func(t *testing.T) {
 		t.Parallel()
-		e := httpexpect.New(t, "http://"+FlamingoURL)
-		response := helper.GraphQlRequest(t, e, loadGraphQL(t, "commerce_cart_AddBundleToCart", map[string]string{
+
+		expect := httpexpect.New(t, "http://"+FlamingoURL)
+		response := helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "commerce_cart_AddBundleToCart", map[string]string{
 			"MARKETPLACE_CODE":          "fake_bundle",
 			"DELIVERY_CODE":             "delivery",
 			"IDENTIFIER1":               "identifier1",
@@ -283,8 +297,9 @@ func TestAddBundleProductToCart(t *testing.T) {
 
 	t.Run("add to cart bundle product, required choice is not selected", func(t *testing.T) {
 		t.Parallel()
-		e := httpexpect.New(t, "http://"+FlamingoURL)
-		response := helper.GraphQlRequest(t, e, loadGraphQL(t, "commerce_cart_AddBundleToCart", map[string]string{
+
+		expect := httpexpect.New(t, "http://"+FlamingoURL)
+		response := helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "commerce_cart_AddBundleToCart", map[string]string{
 			"MARKETPLACE_CODE":  "fake_bundle",
 			"DELIVERY_CODE":     "delivery",
 			"IDENTIFIER1":       "identifier1",
@@ -302,8 +317,9 @@ func TestAddBundleProductToCart(t *testing.T) {
 
 	t.Run("add to cart bundle product, not existing marketplace code selected", func(t *testing.T) {
 		t.Parallel()
-		e := httpexpect.New(t, "http://"+FlamingoURL)
-		response := helper.GraphQlRequest(t, e, loadGraphQL(t, "commerce_cart_AddBundleToCart", map[string]string{
+
+		expect := httpexpect.New(t, "http://"+FlamingoURL)
+		response := helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "commerce_cart_AddBundleToCart", map[string]string{
 			"MARKETPLACE_CODE":          "fake_bundle",
 			"DELIVERY_CODE":             "delivery",
 			"IDENTIFIER1":               "identifier1",
@@ -329,8 +345,8 @@ func TestUpdateBundleProductQty(t *testing.T) {
 	t.Run("update should update quantity of bundle product", func(t *testing.T) {
 		t.Parallel()
 
-		e := httpexpect.New(t, "http://"+FlamingoURL)
-		addResponse := helper.GraphQlRequest(t, e, loadGraphQL(t, "commerce_cart_AddBundleToCart_Update_Qty_Helper", map[string]string{
+		expect := httpexpect.New(t, "http://"+FlamingoURL)
+		addResponse := helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "commerce_cart_AddBundleToCart_Update_Qty_Helper", map[string]string{
 			"MARKETPLACE_CODE":          "fake_bundle",
 			"DELIVERY_CODE":             "delivery",
 			"IDENTIFIER1":               "identifier1",
@@ -345,7 +361,7 @@ func TestUpdateBundleProductQty(t *testing.T) {
 			Element(0).Object().Value("decoratedItems").Array().Element(0).Object().
 			Value("item").Object().Value("id").String().Raw()
 
-		updateResponse := helper.GraphQlRequest(t, e, loadGraphQL(t, "update_item_quantity", map[string]string{
+		updateResponse := helper.GraphQlRequest(t, expect, graphql.LoadGraphQL(t, "update_item_quantity", map[string]string{
 			"ITEM_ID":       itemID,
 			"DELIVERY_CODE": "inflight",
 			"QTY":           "4",

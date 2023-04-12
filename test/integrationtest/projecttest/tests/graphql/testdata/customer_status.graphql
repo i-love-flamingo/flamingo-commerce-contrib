@@ -1,6 +1,0 @@
-query {
-    Commerce_Customer_Status {
-        isLoggedIn
-        userID
-    }
-}
