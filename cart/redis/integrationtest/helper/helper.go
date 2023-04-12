@@ -148,7 +148,7 @@ func GenerateGraphQL() {
 	if !ok {
 		panic("services not of correct type")
 	}
-	
+
 	err = graphql.Generate(services, "graphql", "graphql/schema")
 	if err != nil {
 		panic(err)
