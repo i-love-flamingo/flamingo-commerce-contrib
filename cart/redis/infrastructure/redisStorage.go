@@ -65,38 +65,40 @@ func (r *RedisStorage) Inject(
 ) *RedisStorage {
 	r.serializer = serializer
 
-	if config != nil {
-		var err error
-
-		r.ttlGuest, err = time.ParseDuration(config.RedisTTLGuest)
-		if err != nil {
-			panic("can't parse commerce.cart.redis.ttl.guest")
-		}
-
-		r.ttlCustomer, err = time.ParseDuration(config.RedisTTLCustomer)
-		if err != nil {
-			panic("can't parse commerce.cart.redis.ttl.customer")
-		}
-
-		r.keyPrefix = config.RedisKeyPrefix
-
-		var tlsConfig *tls.Config
-		if config.RedisTLS {
-			tlsConfig = &tls.Config{MinVersion: tls.VersionTLS12}
-		}
-
-		r.client = redis.NewClient(&redis.Options{
-			Network:   config.RedisNetwork,
-			Addr:      config.RedisAddress,
-			Password:  config.RedisPassword,
-			DB:        config.RedisDatabase,
-			PoolSize:  int(config.RedisIdleConnections),
-			TLSConfig: tlsConfig,
-		})
-
-		// close redis client
-		runtime.SetFinalizer(r, func(r *RedisStorage) { _ = r.client.Close() })
+	if config == nil {
+		return r
 	}
+
+	var err error
+
+	r.ttlGuest, err = time.ParseDuration(config.RedisTTLGuest)
+	if err != nil {
+		panic("can't parse commerce.contrib.cart.redis.ttl.guest")
+	}
+
+	r.ttlCustomer, err = time.ParseDuration(config.RedisTTLCustomer)
+	if err != nil {
+		panic("can't parse commerce.contrib.cart.redis.ttl.customer")
+	}
+
+	r.keyPrefix = config.RedisKeyPrefix
+
+	var tlsConfig *tls.Config
+	if config.RedisTLS {
+		tlsConfig = &tls.Config{MinVersion: tls.VersionTLS12}
+	}
+
+	r.client = redis.NewClient(&redis.Options{
+		Network:   config.RedisNetwork,
+		Addr:      config.RedisAddress,
+		Password:  config.RedisPassword,
+		DB:        config.RedisDatabase,
+		PoolSize:  int(config.RedisIdleConnections),
+		TLSConfig: tlsConfig,
+	})
+
+	// close redis client
+	runtime.SetFinalizer(r, func(r *RedisStorage) { _ = r.client.Close() })
 
 	return r
 }
@@ -172,10 +174,10 @@ func (r *RedisStorage) RemoveCart(ctx context.Context, cart *cartDomain.Cart) er
 func (r *RedisStorage) Status() (alive bool, details string) {
 	err := r.client.Ping(context.Background()).Err()
 	if err != nil {
-		return false, fmt.Errorf("error trying to PING: %w", err).Error()
+		return false, fmt.Errorf("redis cart storage ping failed: %w", err).Error()
 	}
 
-	return true, "redis for cart storage replies to PING"
+	return true, "redis cart storage replies to ping"
 }
 
 // Serialize a cart using gob

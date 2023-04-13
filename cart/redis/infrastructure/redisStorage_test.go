@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os/exec"
 	"testing"
+	"time"
 
 	"flamingo.me/flamingo-commerce-contrib/cart/redis/infrastructure"
 	cartDomain "flamingo.me/flamingo-commerce/v3/cart/domain/cart"
@@ -237,22 +238,36 @@ func TestRedisStorage_StoreCart(t *testing.T) {
 			name  string
 			key   string
 			value *cartDomain.Cart
+			ttl   time.Duration
 		}{
 			{
-				name:  "store new value",
-				key:   "another-test",
-				value: &cartDomain.Cart{ID: "another-test", EntityID: "1"},
+				name:  "store new value as guest",
+				key:   "another-test-guest",
+				value: &cartDomain.Cart{ID: "another-test-guest", EntityID: "1", BelongsToAuthenticatedUser: false},
+				ttl:   time.Minute,
+			},
+			{
+				name:  "store new value as customer",
+				key:   "another-test-customer",
+				value: &cartDomain.Cart{ID: "another-test-customer", EntityID: "1", BelongsToAuthenticatedUser: true},
+				ttl:   2 * time.Minute,
 			},
 			{
 				name:  "overwrite existing",
 				key:   "test",
 				value: &cartDomain.Cart{ID: "test", EntityID: "2"},
+				ttl:   time.Minute,
 			},
 		}
 
 		for _, tt := range tests {
 			t.Run(tt.name, func(t *testing.T) {
 				require.NoError(t, storage.StoreCart(context.Background(), tt.value))
+
+				ttl := client.TTL(context.Background(), tt.key)
+				require.NoError(t, ttl.Err())
+
+				assert.Equal(t, tt.ttl, ttl.Val())
 
 				cmd := client.Get(context.Background(), tt.key)
 				require.NoError(t, cmd.Err())

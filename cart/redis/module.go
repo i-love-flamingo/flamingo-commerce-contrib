@@ -42,10 +42,10 @@ commerce: {
 				enabled: bool | *true
 				keyPrefix: string | *"cart:"
 				ttl: {
-					guest: string | *"48h"
+					guest: string | *"24h"
 					customer: string | *"168h"
 				}
-				address: string | *""
+				address: string | *"127.0.0.1:6379"
 				network: "unix" | *"tcp"
 				password: string | *""
 				idleConnections: number | *10
