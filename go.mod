@@ -13,7 +13,7 @@ require (
 	github.com/go-redis/redis/v9 v9.0.0-beta.2
 	github.com/go-test/deep v1.1.0
 	github.com/google/go-cmp v0.5.9
-	github.com/spf13/cobra v1.6.1
+	github.com/spf13/cobra v1.7.0
 	github.com/stretchr/testify v1.8.1
 	github.com/stvp/tempredis v0.0.0-20181119212430-b82af8480203
 	github.com/testcontainers/testcontainers-go v0.15.0
@@ -69,7 +69,7 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/imkira/go-interpol v1.0.0 // indirect
-	github.com/inconshreveable/mousetrap v1.0.1 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/klauspost/compress v1.15.11 // indirect
 	github.com/leebenson/conform v1.2.2 // indirect
 	github.com/leekchan/accounting v1.0.0 // indirect
