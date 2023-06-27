@@ -17,7 +17,7 @@ require (
 	github.com/stretchr/testify v1.8.4
 	github.com/stvp/tempredis v0.0.0-20181119212430-b82af8480203
 	github.com/testcontainers/testcontainers-go v0.15.0
-	github.com/vektah/gqlparser/v2 v2.5.1
+	github.com/vektah/gqlparser/v2 v2.5.6
 )
 
 require (
@@ -98,7 +98,7 @@ require (
 	github.com/rbcervilla/redisstore/v8 v8.1.0 // indirect
 	github.com/rbcervilla/redisstore/v9 v9.0.0 // indirect
 	github.com/redis/go-redis/v9 v9.0.3 // indirect
-	github.com/sergi/go-diff v1.1.0 // indirect
+	github.com/sergi/go-diff v1.3.1 // indirect
 	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
