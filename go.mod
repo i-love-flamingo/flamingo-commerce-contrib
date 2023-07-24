@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	flamingo.me/dingo v0.2.10
-	flamingo.me/flamingo-commerce/v3 v3.6.1-0.20230412150446-30fb66838e06
+	flamingo.me/flamingo-commerce/v3 v3.7.0
 	flamingo.me/flamingo/v3 v3.6.1
 	flamingo.me/form v1.1.1
 	flamingo.me/graphql v1.9.0
@@ -42,7 +42,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/docker/distribution v2.8.1+incompatible // indirect
-	github.com/docker/docker v20.10.17+incompatible // indirect
+	github.com/docker/docker v20.10.24+incompatible // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/etgryphon/stringUp v0.0.0-20121020160746-31534ccd8cac // indirect
@@ -90,7 +90,7 @@ require (
 	github.com/nicksnyder/go-i18n v0.0.0-20180814031359-04f547cc50da // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.0.3-0.20211202183452-c5a74bcca799 // indirect
-	github.com/opencontainers/runc v1.1.3 // indirect
+	github.com/opencontainers/runc v1.1.5 // indirect
 	github.com/openzipkin/zipkin-go v0.4.1 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
