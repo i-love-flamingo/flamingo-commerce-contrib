@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: [ '1.20', '1.*' ]
+        go: [ '1.20', '1.21' ]
     name: With Go ${{ matrix.go }}
     steps:
       - uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: [ '1.*' ]
+        go: [ '1.21' ]
     name: Static checks
     steps:
       - uses: actions/checkout@v4
@@ -37,20 +37,13 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
-      - name: Get dependencies
-        run: go get -v -t -d ./...
       - name: Go Vet
         run: go vet ./...
-      - name: Go Fmt
-        run: |
-          fmt=$(gofmt -l .)
-          test -z $fmt || (echo "please run gofmt" ; echo $fmt ; exit 1)
-      - name: Go Staticcheck
-        run: go run honnef.co/go/tools/cmd/staticcheck@latest ./...
-      - name: Spelling
-        run: go run github.com/client9/misspell/cmd/misspell@v0.3.4 -error .
-      - name: In effective assignments
-        run: go run github.com/gordonklaus/ineffassign@4cc7213 .
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: 'v1.55'
+          args: $(rev=${{ env.REV }}; if [[ $rev != '' ]]; then echo --new-from-rev=$rev; fi)
       - name: Goimports
         run: |
           go run golang.org/x/tools/cmd/goimports@latest -w .
@@ -65,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: [ '1.*' ]
+        go: [ '1.21' ]
     name: Integration
     steps:
       - uses: actions/checkout@v4
