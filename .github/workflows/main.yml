@@ -40,7 +40,7 @@ jobs:
       - name: Go Vet
         run: go vet ./...
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v4
         with:
           version: 'v1.55'
           args: $(rev=${{ env.REV }}; if [[ $rev != '' ]]; then echo --new-from-rev=$rev; fi)
