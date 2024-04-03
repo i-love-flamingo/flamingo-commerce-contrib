@@ -11,8 +11,8 @@ import (
 
 	"flamingo.me/flamingo-commerce-contrib/cart/redis/infrastructure"
 	cartDomain "flamingo.me/flamingo-commerce/v3/cart/domain/cart"
-	"github.com/go-redis/redis/v9"
 	"github.com/go-test/deep"
+	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stvp/tempredis"
