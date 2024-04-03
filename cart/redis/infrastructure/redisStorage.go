@@ -13,6 +13,7 @@ import (
 	cartDomain "flamingo.me/flamingo-commerce/v3/cart/domain/cart"
 	"flamingo.me/flamingo-commerce/v3/cart/infrastructure"
 	"flamingo.me/flamingo/v3/core/healthcheck/domain/healthcheck"
+	"flamingo.me/flamingo/v3/framework/flamingo"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -29,6 +30,7 @@ type (
 		// time to live
 		ttlGuest    time.Duration
 		ttlCustomer time.Duration
+		logger      flamingo.Logger
 	}
 
 	// CartSerializer serializes carts in order to store them in redis
@@ -51,6 +53,7 @@ var (
 
 // Inject dependencies and build redis client
 func (r *RedisStorage) Inject(
+	logger flamingo.Logger,
 	serializer CartSerializer,
 	config *struct {
 		RedisKeyPrefix       string  `inject:"config:commerce.contrib.cart.redis.keyPrefix"`
@@ -64,6 +67,7 @@ func (r *RedisStorage) Inject(
 		RedisTLS             bool    `inject:"config:commerce.contrib.cart.redis.tls,optional"`
 	},
 ) *RedisStorage {
+	r.logger = logger
 	r.serializer = serializer
 
 	if config == nil {
@@ -107,8 +111,8 @@ func (r *RedisStorage) Inject(
 // GetCart fetches a cart from redis and deserializes it
 func (r *RedisStorage) GetCart(ctx context.Context, id string) (*cartDomain.Cart, error) {
 	cmd := r.client.Get(ctx, r.keyPrefix+id)
-	if cmd.Err() != nil {
-		return nil, fmt.Errorf("could not get cart: %w", cmd.Err())
+	if err := cmd.Err(); err != nil {
+		return nil, fmt.Errorf("could not get cart: %w", err)
 	}
 
 	b, err := cmd.Bytes()
@@ -126,7 +130,14 @@ func (r *RedisStorage) GetCart(ctx context.Context, id string) (*cartDomain.Cart
 
 // HasCart checks if the cart id exists as a key in redis
 func (r *RedisStorage) HasCart(ctx context.Context, id string) bool {
-	return r.client.Exists(ctx, r.keyPrefix+id).Val() > 0
+	cmd := r.client.Exists(ctx, r.keyPrefix+id)
+	if err := cmd.Err(); err != nil {
+		r.logger.WithContext(ctx).WithField(flamingo.LogKeyModule, "RedisStorage").Warn(fmt.Errorf("HasCart: couldn't check redis exists: %w returned value: %q", err, cmd.Val()))
+
+		return false
+	}
+
+	return cmd.Val() > 0
 }
 
 // StoreCart serializes a cart and stores it in redis

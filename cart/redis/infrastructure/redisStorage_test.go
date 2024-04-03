@@ -11,6 +11,7 @@ import (
 
 	"flamingo.me/flamingo-commerce-contrib/cart/redis/infrastructure"
 	cartDomain "flamingo.me/flamingo-commerce/v3/cart/domain/cart"
+	"flamingo.me/flamingo/v3/framework/flamingo"
 	"github.com/go-test/deep"
 	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/assert"
@@ -34,6 +35,7 @@ var (
 
 func getRedisStorage(network, address string) *infrastructure.RedisStorage {
 	return new(infrastructure.RedisStorage).Inject(
+		flamingo.NullLogger{},
 		&infrastructure.GobSerializer{},
 		&struct {
 			RedisKeyPrefix       string  `inject:"config:commerce.contrib.cart.redis.keyPrefix"`
