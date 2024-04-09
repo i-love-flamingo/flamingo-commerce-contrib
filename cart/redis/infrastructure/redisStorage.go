@@ -109,8 +109,8 @@ func (r *RedisStorage) Inject(
 }
 
 // GetCart fetches a cart from redis and deserializes it
-func (r *RedisStorage) GetCart(ctx context.Context, id string) (*cartDomain.Cart, error) {
-	cmd := r.client.Get(ctx, r.keyPrefix+id)
+func (r *RedisStorage) GetCart(_ context.Context, id string) (*cartDomain.Cart, error) {
+	cmd := r.client.Get(context.Background(), r.keyPrefix+id)
 	if err := cmd.Err(); err != nil {
 		return nil, fmt.Errorf("could not get cart: %w", err)
 	}
@@ -130,7 +130,7 @@ func (r *RedisStorage) GetCart(ctx context.Context, id string) (*cartDomain.Cart
 
 // HasCart checks if the cart id exists as a key in redis
 func (r *RedisStorage) HasCart(ctx context.Context, id string) bool {
-	cmd := r.client.Exists(ctx, r.keyPrefix+id)
+	cmd := r.client.Exists(context.Background(), r.keyPrefix+id)
 	if err := cmd.Err(); err != nil {
 		r.logger.WithContext(ctx).WithField(flamingo.LogKeyModule, "RedisStorage").Warn(fmt.Errorf("HasCart: couldn't check redis exists: %w returned value: %q", err, cmd.Val()))
 
@@ -141,7 +141,7 @@ func (r *RedisStorage) HasCart(ctx context.Context, id string) bool {
 }
 
 // StoreCart serializes a cart and stores it in redis
-func (r *RedisStorage) StoreCart(ctx context.Context, cart *cartDomain.Cart) error {
+func (r *RedisStorage) StoreCart(_ context.Context, cart *cartDomain.Cart) error {
 	if cart == nil {
 		return ErrCartIsNil
 	}
@@ -151,7 +151,7 @@ func (r *RedisStorage) StoreCart(ctx context.Context, cart *cartDomain.Cart) err
 		return fmt.Errorf("could not store cart: %w", err)
 	}
 
-	err = r.client.Set(ctx, r.keyPrefix+cart.ID, b, r.ttl(cart)).Err()
+	err = r.client.Set(context.Background(), r.keyPrefix+cart.ID, b, r.ttl(cart)).Err()
 	if err != nil {
 		return fmt.Errorf("could not store cart: %w", err)
 	}
@@ -169,12 +169,12 @@ func (r *RedisStorage) ttl(cart *cartDomain.Cart) time.Duration {
 }
 
 // RemoveCart deletes a cart from redis
-func (r *RedisStorage) RemoveCart(ctx context.Context, cart *cartDomain.Cart) error {
+func (r *RedisStorage) RemoveCart(_ context.Context, cart *cartDomain.Cart) error {
 	if cart == nil {
 		return ErrCartIsNil
 	}
 
-	err := r.client.Del(ctx, r.keyPrefix+cart.ID).Err()
+	err := r.client.Del(context.Background(), r.keyPrefix+cart.ID).Err()
 	if err != nil {
 		return fmt.Errorf("could not remove cart: %w", err)
 	}
