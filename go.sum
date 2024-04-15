@@ -45,6 +45,8 @@ flamingo.me/dingo v0.2.10 h1:FAOsDtKHA+0KmAIdJYzsFNMMOCOMdVX4uAL8JPo6Z8M=
 flamingo.me/dingo v0.2.10/go.mod h1:5motgtzS2t26y20nndTLH7tslkBMg4GivTTn+ICQkl8=
 flamingo.me/flamingo-commerce/v3 v3.9.0 h1:qHjqhmoxGomsNGLi36ZsOxaVms4MqXzOIcYPrEuSo/U=
 flamingo.me/flamingo-commerce/v3 v3.9.0/go.mod h1:EUzAxpi+OqTkbFOyyhRZiNziIs4JXC1DQsAgtDQDUrE=
+flamingo.me/flamingo-commerce/v3 v3.10.0 h1:uOpbUJYQBpIeAEOc+qe7kBiZwZfuz31p2omsKFag6w0=
+flamingo.me/flamingo-commerce/v3 v3.10.0/go.mod h1:arc9jK7yA0EMQxMGAvqCryJL5sj5ki/IYastvuMhEhI=
 flamingo.me/flamingo/v3 v3.8.0 h1:paVSR0+OxWs+QlyzcUsapwMGYUsCdB6kkLn3KzLW7NI=
 flamingo.me/flamingo/v3 v3.8.0/go.mod h1:HXInE9B9l8pYfoPfXB8Ky/HTEf/DtnyEfFMHO4WH9hk=
 flamingo.me/form v1.1.2 h1:o7ToYehtOuklO16vrqT2Qao40BqbB3A9vZmeoszGzLQ=
@@ -76,6 +78,8 @@ github.com/Microsoft/hcsshim v0.11.4 h1:68vKo2VN8DE9AdN4tnkWnmdhqdbpUFM8OF3Airm7
 github.com/Microsoft/hcsshim v0.11.4/go.mod h1:smjE4dvqPX9Zldna+t5FG3rnoHhaB7QYxPRqGcpAD9w=
 github.com/PuerkitoBio/goquery v1.8.1 h1:uQxhNlArOIdbrH1tr0UXwdVFgDcZDrZVdcpygAcwmWM=
 github.com/PuerkitoBio/goquery v1.8.1/go.mod h1:Q8ICL1kNUJ2sXGoAhPGUdYDJvgQgHzJsnnd3H7Ho5jQ=
+github.com/Rhymond/go-money v1.0.10 h1:jaySwEIcS6cQELv1XiJSGqcicI93ln9RhHHa14zWpZc=
+github.com/Rhymond/go-money v1.0.10/go.mod h1:iHvCuIvitxu2JIlAlhF0g9jHqjRSr+rpdOs7Omqlupg=
 github.com/Shopify/sarama v1.19.0/go.mod h1:FVkBWblsNy7DGZRfXLU0O9RCGt5g3g3yEuWXgklEdEo=
 github.com/Shopify/toxiproxy v2.1.4+incompatible/go.mod h1:OXgGpZ6Cli1/URJOF1DMxUHB2q5Ap20/P/eIdh4G0pI=
 github.com/TylerBrock/colorjson v0.0.0-20200706003622-8a50f05110d2 h1:ZBbLwSJqkHBuFDA6DUhhse0IGJ7T5bemHyNILUjvOq4=
