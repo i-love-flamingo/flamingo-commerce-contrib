@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	flamingo.me/dingo v0.2.10
-	flamingo.me/flamingo-commerce/v3 v3.9.0
+	flamingo.me/flamingo-commerce/v3 v3.10.0
 	flamingo.me/flamingo/v3 v3.8.0
 	flamingo.me/form v1.1.2
 	flamingo.me/graphql v1.11.2
@@ -30,6 +30,7 @@ require (
 	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/Microsoft/hcsshim v0.11.4 // indirect
+	github.com/Rhymond/go-money v1.0.10 // indirect
 	github.com/TylerBrock/colorjson v0.0.0-20200706003622-8a50f05110d2 // indirect
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/ajg/form v1.5.1 // indirect
