@@ -5,7 +5,7 @@ go 1.21
 require (
 	flamingo.me/dingo v0.2.10
 	flamingo.me/flamingo-commerce/v3 v3.10.0
-	flamingo.me/flamingo/v3 v3.8.0
+	flamingo.me/flamingo/v3 v3.8.1
 	flamingo.me/form v1.1.2
 	flamingo.me/graphql v1.11.2
 	github.com/99designs/gqlgen v0.17.45
@@ -146,12 +146,12 @@ require (
 	go.opentelemetry.io/otel/trace v1.24.0 // indirect
 	go.uber.org/automaxprocs v1.5.3 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
-	go.uber.org/zap v1.26.0 // indirect
+	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/exp v0.0.0-20230510235704-dd950f8aeaea // indirect
 	golang.org/x/mod v0.16.0 // indirect
-	golang.org/x/net v0.22.0 // indirect
-	golang.org/x/sync v0.6.0 // indirect
+	golang.org/x/net v0.23.0 // indirect
+	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.19.0 // indirect
