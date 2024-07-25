@@ -12,7 +12,7 @@ require (
 	github.com/gavv/httpexpect/v2 v2.16.0
 	github.com/go-test/deep v1.1.0
 	github.com/google/go-cmp v0.6.0
-	github.com/redis/go-redis/v9 v9.5.2
+	github.com/redis/go-redis/v9 v9.6.1
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
 	github.com/stvp/tempredis v0.0.0-20231107154819-8a695b693b9c
