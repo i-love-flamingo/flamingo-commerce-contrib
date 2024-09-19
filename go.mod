@@ -5,7 +5,7 @@ go 1.22
 require (
 	flamingo.me/dingo v0.2.10
 	flamingo.me/flamingo-commerce/v3 v3.11.0
-	flamingo.me/flamingo/v3 v3.9.0
+	flamingo.me/flamingo/v3 v3.10.1
 	flamingo.me/form v1.1.2
 	flamingo.me/graphql v1.11.3
 	github.com/99designs/gqlgen v0.17.49
@@ -154,7 +154,7 @@ require (
 	golang.org/x/exp v0.0.0-20230510235704-dd950f8aeaea // indirect
 	golang.org/x/mod v0.18.0 // indirect
 	golang.org/x/net v0.27.0 // indirect
-	golang.org/x/sync v0.7.0 // indirect
+	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	golang.org/x/tools v0.22.0 // indirect
