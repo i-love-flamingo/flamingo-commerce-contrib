@@ -19,7 +19,7 @@ require (
 	github.com/stretchr/testify v1.9.0
 	github.com/stvp/tempredis v0.0.0-20231107154819-8a695b693b9c
 	github.com/testcontainers/testcontainers-go v0.33.0
-	github.com/vektah/gqlparser/v2 v2.5.16
+	github.com/vektah/gqlparser/v2 v2.5.17
 )
 
 require (
