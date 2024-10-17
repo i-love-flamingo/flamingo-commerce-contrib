@@ -10,7 +10,7 @@ require (
 	flamingo.me/flamingo/v3 v3.11.0
 	flamingo.me/form v1.1.2
 	flamingo.me/graphql v1.12.0
-	github.com/99designs/gqlgen v0.17.53
+	github.com/99designs/gqlgen v0.17.55
 	github.com/gavv/httpexpect/v2 v2.16.0
 	github.com/go-test/deep v1.1.1
 	github.com/google/go-cmp v0.6.0
