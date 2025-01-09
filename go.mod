@@ -7,7 +7,7 @@ toolchain go1.23.4
 require (
 	flamingo.me/dingo v0.3.0
 	flamingo.me/flamingo-commerce/v3 v3.11.0
-	flamingo.me/flamingo/v3 v3.11.0
+	flamingo.me/flamingo/v3 v3.12.0
 	flamingo.me/form v1.1.2
 	flamingo.me/graphql v1.12.0
 	github.com/99designs/gqlgen v0.17.63
@@ -150,7 +150,7 @@ require (
 	go.opentelemetry.io/otel v1.24.0 // indirect
 	go.opentelemetry.io/otel/metric v1.24.0 // indirect
 	go.opentelemetry.io/otel/trace v1.24.0 // indirect
-	go.uber.org/automaxprocs v1.5.3 // indirect
+	go.uber.org/automaxprocs v1.6.0 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/crypto v0.31.0 // indirect
