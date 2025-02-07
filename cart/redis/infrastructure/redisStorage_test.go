@@ -9,7 +9,6 @@ import (
 	"testing"
 	"time"
 
-	"flamingo.me/flamingo-commerce-contrib/cart/redis/infrastructure"
 	cartDomain "flamingo.me/flamingo-commerce/v3/cart/domain/cart"
 	"flamingo.me/flamingo/v3/framework/flamingo"
 	"github.com/go-test/deep"
@@ -19,6 +18,8 @@ import (
 	"github.com/stvp/tempredis"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
+
+	"flamingo.me/flamingo-commerce-contrib/cart/redis/infrastructure"
 )
 
 const (
@@ -81,9 +82,11 @@ func startUpDockerRedis(t *testing.T) (func(), string, redis.UniversalClient) {
 
 	ctx := context.Background()
 	req := testcontainers.ContainerRequest{
-		Image:        "redis:latest",
+		Image:        "valkey/valkey:7",
 		ExposedPorts: []string{"6379/tcp"},
-		WaitingFor:   wait.ForLog("Ready to accept connections"),
+		WaitingFor: wait.ForAll(
+			wait.ForLog("Ready to accept connections"),
+			wait.ForListeningPort("6379/tcp")),
 	}
 
 	redisC, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{

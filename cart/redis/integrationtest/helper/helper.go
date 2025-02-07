@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"flamingo.me/dingo"
-	"flamingo.me/flamingo-commerce-contrib/cart/redis"
 	"flamingo.me/flamingo-commerce/v3/breadcrumbs"
 	"flamingo.me/flamingo-commerce/v3/cart"
 	"flamingo.me/flamingo-commerce/v3/category"
@@ -41,6 +40,8 @@ import (
 	"flamingo.me/graphql"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
+
+	"flamingo.me/flamingo-commerce-contrib/cart/redis"
 )
 
 // modulesDemoProject return slice of modules that we want to have in our example app for testing
@@ -85,9 +86,11 @@ var redisC testcontainers.Container
 func startUpDockerRedis(configMap config.Map) config.Map {
 	ctx := context.Background()
 	req := testcontainers.ContainerRequest{
-		Image:        "redis:latest",
+		Image:        "valkey/valkey:7",
 		ExposedPorts: []string{"6379/tcp"},
-		WaitingFor:   wait.ForLog("Ready to accept connections"),
+		WaitingFor: wait.ForAll(
+			wait.ForLog("Ready to accept connections"),
+			wait.ForListeningPort("6379/tcp")),
 	}
 
 	var err error
