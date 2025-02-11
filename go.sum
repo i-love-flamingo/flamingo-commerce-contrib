@@ -699,6 +699,8 @@ github.com/vektah/gqlparser/v2 v2.5.17 h1:9At7WblLV7/36nulgekUgIaqHZWn5hxqluxrxG
 github.com/vektah/gqlparser/v2 v2.5.17/go.mod h1:1lz1OeCqgQbQepsGxPVywrjdBHW2T08PUS3pJqepRww=
 github.com/vektah/gqlparser/v2 v2.5.21 h1:Zw1rG2dr1pRR4wqwbVq4d6+xk2f4ut/yo+hwr4QjE08=
 github.com/vektah/gqlparser/v2 v2.5.21/go.mod h1:xMl+ta8a5M1Yo1A1Iwt/k7gSpscwSnHZdw7tfhEGfTM=
+github.com/vektah/gqlparser/v2 v2.5.22 h1:yaaeJ0fu+nv1vUMW0Hl+aS1eiv1vMfapBNjpffAda1I=
+github.com/vektah/gqlparser/v2 v2.5.22/go.mod h1:xMl+ta8a5M1Yo1A1Iwt/k7gSpscwSnHZdw7tfhEGfTM=
 github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f/go.mod h1:N2zxlSyiKSe5eX1tZViRH5QA0qijqEDrYZiPEAiq3wU=
 github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb h1:zGWFAtiMcyryUHoUjUJX0/lt1H2+i2Ka2n+D3DImSNo=
 github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb/go.mod h1:N2zxlSyiKSe5eX1tZViRH5QA0qijqEDrYZiPEAiq3wU=
