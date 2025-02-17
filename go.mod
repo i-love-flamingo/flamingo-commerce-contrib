@@ -1,13 +1,13 @@
 module flamingo.me/flamingo-commerce-contrib
 
-go 1.22.5
+go 1.23
 
-toolchain go1.23.4
+toolchain go1.24.0
 
 require (
 	flamingo.me/dingo v0.3.0
 	flamingo.me/flamingo-commerce/v3 v3.11.0
-	flamingo.me/flamingo/v3 v3.12.0
+	flamingo.me/flamingo/v3 v3.13.0
 	flamingo.me/form v1.1.2
 	flamingo.me/graphql v1.12.0
 	github.com/99designs/gqlgen v0.17.64
@@ -15,7 +15,7 @@ require (
 	github.com/go-test/deep v1.1.1
 	github.com/google/go-cmp v0.6.0
 	github.com/redis/go-redis/v9 v9.7.0
-	github.com/spf13/cobra v1.8.1
+	github.com/spf13/cobra v1.9.1
 	github.com/stretchr/testify v1.10.0
 	github.com/stvp/tempredis v0.0.0-20231107154819-8a695b693b9c
 	github.com/testcontainers/testcontainers-go v0.35.0
@@ -130,7 +130,7 @@ require (
 	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/sosodev/duration v1.3.1 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
 	github.com/tklauser/numcpus v0.6.1 // indirect
@@ -157,7 +157,7 @@ require (
 	golang.org/x/exp v0.0.0-20230510235704-dd950f8aeaea // indirect
 	golang.org/x/mod v0.20.0 // indirect
 	golang.org/x/net v0.33.0 // indirect
-	golang.org/x/sync v0.10.0 // indirect
+	golang.org/x/sync v0.11.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
 	golang.org/x/tools v0.24.0 // indirect
