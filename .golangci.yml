@@ -10,7 +10,6 @@ run:
 output:
   print-issued-lines: true
   print-linter-name: true
-  uniq-by-line: true
   sort-results: true
 
 linters:
@@ -20,21 +19,20 @@ linters:
     - bodyclose
     - containedctx
     - contextcheck
+    - copyloopvar
     - cyclop
     - durationcheck
+    - err113
     - errcheck
     - errname
     - errorlint
     - exhaustive
-    - exportloopref
     - forbidigo
     - forcetypeassert
     - gocognit
     - goconst
     - gocritic
-    - goerr113
     - gofmt
-    - gomnd
     - gomoddirectives
     - gosec
     - gosimple
@@ -43,6 +41,7 @@ linters:
     - ineffassign
     - makezero
     - misspell
+    - mnd
     - nakedret
     - nestif
     - nilerr
@@ -55,7 +54,6 @@ linters:
     - predeclared
     - revive
     - staticcheck
-    - tenv
     - testpackage
     - thelper
     - tparallel
@@ -63,6 +61,7 @@ linters:
     - unconvert
     - unparam
     - unused
+    - usetesting
     - usestdlibvars
     - varnamelen
     - wrapcheck
@@ -71,18 +70,19 @@ linters:
 issues:
   new: true
   fix: false
+  uniq-by-line: true
   exclude-rules:
     - path: _test\.go
       linters:
         - containedctx
+        - err113
         - forcetypeassert
         - goconst
-        - goerr113
         - varnamelen
         - wrapcheck
 
 linters-settings:
-  gomnd:
+  mnd:
     ignored-functions:
       - context.WithTimeout
   nolintlint:
