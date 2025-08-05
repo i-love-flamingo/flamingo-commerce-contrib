@@ -61,6 +61,7 @@ func (r *RedisStorage) Inject(
 		RedisTTLCustomer     string  `inject:"config:commerce.contrib.cart.redis.ttl.customer"`
 		RedisNetwork         string  `inject:"config:commerce.contrib.cart.redis.network"`
 		RedisAddress         string  `inject:"config:commerce.contrib.cart.redis.address"`
+		RedisUsername        string  `inject:"config:commerce.contrib.cart.redis.username,optional"`
 		RedisPassword        string  `inject:"config:commerce.contrib.cart.redis.password"`
 		RedisIdleConnections float64 `inject:"config:commerce.contrib.cart.redis.idleConnections"`
 		RedisDatabase        int     `inject:"config:commerce.contrib.cart.redis.database,optional"`
@@ -96,6 +97,7 @@ func (r *RedisStorage) Inject(
 	r.client = redis.NewClient(&redis.Options{
 		Network:   config.RedisNetwork,
 		Addr:      config.RedisAddress,
+		Username:  config.RedisUsername,
 		Password:  config.RedisPassword,
 		DB:        config.RedisDatabase,
 		PoolSize:  int(config.RedisIdleConnections),
