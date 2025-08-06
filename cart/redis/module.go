@@ -2,9 +2,10 @@ package redis
 
 import (
 	"flamingo.me/dingo"
-	"flamingo.me/flamingo-commerce-contrib/cart/redis/infrastructure"
 	cartInfrastructure "flamingo.me/flamingo-commerce/v3/cart/infrastructure"
 	"flamingo.me/flamingo/v3/core/healthcheck/domain/healthcheck"
+
+	"flamingo.me/flamingo-commerce-contrib/cart/redis/infrastructure"
 )
 
 type (
@@ -34,6 +35,7 @@ func (m *Module) Configure(injector *dingo.Injector) {
 
 // CueConfig defines the cart module configuration
 func (*Module) CueConfig() string {
+	// language=cue
 	return `
 commerce: {
 	contrib: {
@@ -47,6 +49,7 @@ commerce: {
 				}
 				address: string | *"127.0.0.1:6379"
 				network: "unix" | *"tcp"
+				username?: string & !=""
 				password: string | *""
 				idleConnections: number | *10
 				database: float | int | *0

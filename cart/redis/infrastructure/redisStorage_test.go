@@ -34,7 +34,7 @@ var (
 	}
 )
 
-func getRedisStorage(network, address string) *infrastructure.RedisStorage {
+func getRedisStorage(network, address, username, password string) *infrastructure.RedisStorage {
 	return new(infrastructure.RedisStorage).Inject(
 		flamingo.NullLogger{},
 		&infrastructure.GobSerializer{},
@@ -44,11 +44,21 @@ func getRedisStorage(network, address string) *infrastructure.RedisStorage {
 			RedisTTLCustomer     string  `inject:"config:commerce.contrib.cart.redis.ttl.customer"`
 			RedisNetwork         string  `inject:"config:commerce.contrib.cart.redis.network"`
 			RedisAddress         string  `inject:"config:commerce.contrib.cart.redis.address"`
+			RedisUsername        string  `inject:"config:commerce.contrib.cart.redis.username,optional"`
 			RedisPassword        string  `inject:"config:commerce.contrib.cart.redis.password"`
 			RedisIdleConnections float64 `inject:"config:commerce.contrib.cart.redis.idleConnections"`
 			RedisDatabase        int     `inject:"config:commerce.contrib.cart.redis.database,optional"`
 			RedisTLS             bool    `inject:"config:commerce.contrib.cart.redis.tls,optional"`
-		}{RedisIdleConnections: 3, RedisNetwork: network, RedisAddress: address, RedisDatabase: 0, RedisTTLGuest: "1m", RedisTTLCustomer: "2m"})
+		}{
+			RedisIdleConnections: 3,
+			RedisNetwork:         network,
+			RedisAddress:         address,
+			RedisUsername:        username,
+			RedisPassword:        password,
+			RedisDatabase:        0,
+			RedisTTLGuest:        "1m",
+			RedisTTLCustomer:     "2m",
+		})
 }
 
 func prepareData(t *testing.T, ctx context.Context, client redis.UniversalClient) {
@@ -77,12 +87,20 @@ func startUpLocalRedis(t *testing.T) (*tempredis.Server, redis.UniversalClient) 
 	return server, client
 }
 
-func startUpDockerRedis(t *testing.T) (func(), string, redis.UniversalClient) {
+func startUpDockerRedis(t *testing.T) (func(), redis.Options, redis.UniversalClient) {
 	t.Helper()
+
+	username := "myuser"
+	password := "MySecurePassword"
 
 	ctx := context.Background()
 	req := testcontainers.ContainerRequest{
-		Image:        "valkey/valkey:7",
+		Image: "valkey/valkey:7",
+		Cmd: []string{
+			"valkey-server",
+			"--user default off",
+			fmt.Sprintf("--user %s on >%s allcommands allkeys", username, password),
+		},
 		ExposedPorts: []string{"6379/tcp"},
 		WaitingFor: wait.ForAll(
 			wait.ForLog("Ready to accept connections"),
@@ -102,11 +120,13 @@ func startUpDockerRedis(t *testing.T) (func(), string, redis.UniversalClient) {
 	require.NoError(t, err)
 
 	address := fmt.Sprintf("%s:%s", host, port.Port())
-	client := redis.NewClient(&redis.Options{Network: "tcp", Addr: address})
+
+	options := redis.Options{Network: "tcp", Addr: address, Username: username, Password: password}
+	client := redis.NewClient(&options)
 
 	prepareData(t, ctx, client)
 
-	return func() { _ = redisC.Terminate(ctx) }, address, client
+	return func() { _ = redisC.Terminate(ctx) }, options, client
 }
 
 func TestRedisStorage_GetCart(t *testing.T) {
@@ -143,7 +163,7 @@ func TestRedisStorage_GetCart(t *testing.T) {
 		for _, tt := range tests {
 			t.Run(tt.name, func(t *testing.T) {
 				got, err := storage.GetCart(context.Background(), tt.key)
-				assert.Equal(t, tt.expectedErr, err != nil)
+				require.Equalf(t, tt.expectedErr, err != nil, "error expected: %v, got '%v'", tt.expectedErr, err)
 				if diff := deep.Equal(got, tt.expected); diff != nil {
 					t.Error("expected response is wrong: ", diff)
 				}
@@ -159,7 +179,7 @@ func TestRedisStorage_GetCart(t *testing.T) {
 		}
 
 		server, _ := startUpLocalRedis(t)
-		store := getRedisStorage("unix", server.Socket())
+		store := getRedisStorage("unix", server.Socket(), "", "")
 		runTestCases(t, store)
 	})
 
@@ -170,9 +190,10 @@ func TestRedisStorage_GetCart(t *testing.T) {
 			t.Skip("docker not installed")
 		}
 
-		shutdown, address, _ := startUpDockerRedis(t)
+		shutdown, options, _ := startUpDockerRedis(t)
 		defer shutdown()
-		store := getRedisStorage("tcp", address)
+
+		store := getRedisStorage("tcp", options.Addr, options.Username, options.Password)
 		runTestCases(t, store)
 	})
 }
@@ -215,7 +236,7 @@ func TestRedisStorage_HasCart(t *testing.T) {
 		}
 
 		server, _ := startUpLocalRedis(t)
-		store := getRedisStorage("unix", server.Socket())
+		store := getRedisStorage("unix", server.Socket(), "", "")
 		runTestCases(t, store)
 	})
 
@@ -226,9 +247,10 @@ func TestRedisStorage_HasCart(t *testing.T) {
 			t.Skip("docker not installed")
 		}
 
-		shutdown, address, _ := startUpDockerRedis(t)
+		shutdown, options, _ := startUpDockerRedis(t)
 		defer shutdown()
-		store := getRedisStorage("tcp", address)
+
+		store := getRedisStorage("tcp", options.Addr, options.Username, options.Password)
 		runTestCases(t, store)
 	})
 }
@@ -296,7 +318,7 @@ func TestRedisStorage_StoreCart(t *testing.T) {
 		}
 
 		server, client := startUpLocalRedis(t)
-		store := getRedisStorage("unix", server.Socket())
+		store := getRedisStorage("unix", server.Socket(), "", "")
 		runTestCases(t, store, client)
 	})
 
@@ -307,9 +329,10 @@ func TestRedisStorage_StoreCart(t *testing.T) {
 			t.Skip("docker not installed")
 		}
 
-		shutdown, address, client := startUpDockerRedis(t)
+		shutdown, options, client := startUpDockerRedis(t)
 		defer shutdown()
-		store := getRedisStorage("tcp", address)
+
+		store := getRedisStorage("tcp", options.Addr, options.Username, options.Password)
 		runTestCases(t, store, client)
 	})
 }
@@ -357,7 +380,7 @@ func TestRedisStorage_RemoveCart(t *testing.T) {
 		}
 
 		server, client := startUpLocalRedis(t)
-		store := getRedisStorage("unix", server.Socket())
+		store := getRedisStorage("unix", server.Socket(), "", "")
 		runTestCases(t, store, client)
 	})
 
@@ -368,9 +391,10 @@ func TestRedisStorage_RemoveCart(t *testing.T) {
 			t.Skip("docker not installed")
 		}
 
-		shutdown, address, client := startUpDockerRedis(t)
+		shutdown, options, client := startUpDockerRedis(t)
 		defer shutdown()
-		store := getRedisStorage("tcp", address)
+
+		store := getRedisStorage("tcp", options.Addr, options.Username, options.Password)
 		runTestCases(t, store, client)
 	})
 }
@@ -411,8 +435,8 @@ func TestRedisStorage_MultipleStoragesSingleRedis(t *testing.T) {
 		}
 
 		server, _ := startUpLocalRedis(t)
-		storeA := getRedisStorage("unix", server.Socket())
-		storeB := getRedisStorage("unix", server.Socket())
+		storeA := getRedisStorage("unix", server.Socket(), "", "")
+		storeB := getRedisStorage("unix", server.Socket(), "", "")
 		runTestCase(t, storeA, storeB)
 	})
 
@@ -423,10 +447,11 @@ func TestRedisStorage_MultipleStoragesSingleRedis(t *testing.T) {
 			t.Skip("docker not installed")
 		}
 
-		shutdown, address, _ := startUpDockerRedis(t)
+		shutdown, options, _ := startUpDockerRedis(t)
 		defer shutdown()
-		storeA := getRedisStorage("tcp", address)
-		storeB := getRedisStorage("tcp", address)
+
+		storeA := getRedisStorage("tcp", options.Addr, options.Username, options.Password)
+		storeB := getRedisStorage("tcp", options.Addr, options.Username, options.Password)
 		runTestCase(t, storeA, storeB)
 	})
 }
