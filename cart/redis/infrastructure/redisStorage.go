@@ -107,6 +107,10 @@ func (r *RedisStorage) Inject(
 	// close redis client
 	runtime.SetFinalizer(r, func(r *RedisStorage) { _ = r.client.Close() })
 
+	if err = r.client.Ping(context.Background()).Err(); err != nil {
+		panic("initial ping to redis failed: " + err.Error())
+	}
+
 	return r
 }
 
