@@ -6,9 +6,9 @@ toolchain go1.24.0
 
 require (
 	flamingo.me/dingo v0.3.0
-	flamingo.me/flamingo-commerce/v3 v3.11.0
+	flamingo.me/flamingo-commerce/v3 v3.12.0
 	flamingo.me/flamingo/v3 v3.16.0
-	flamingo.me/form v1.1.2
+	flamingo.me/form v1.1.3
 	flamingo.me/graphql v1.12.1
 	github.com/99designs/gqlgen v0.17.66
 	github.com/gavv/httpexpect/v2 v2.16.0
@@ -31,7 +31,7 @@ require (
 	flamingo.me/pugtemplate v1.3.1 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
-	github.com/Rhymond/go-money v1.0.13 // indirect
+	github.com/Rhymond/go-money v1.0.14 // indirect
 	github.com/TylerBrock/colorjson v0.0.0-20200706003622-8a50f05110d2 // indirect
 	github.com/agnivade/levenshtein v1.2.0 // indirect
 	github.com/ajg/form v1.5.1 // indirect
@@ -55,7 +55,7 @@ require (
 	github.com/fatih/color v1.15.0 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
-	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
+	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-kit/log v0.2.1 // indirect
 	github.com/go-logfmt/logfmt v0.5.1 // indirect
@@ -66,9 +66,9 @@ require (
 	github.com/go-playground/form/v4 v4.2.1 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
-	github.com/go-playground/validator/v10 v10.17.0 // indirect
+	github.com/go-playground/validator/v10 v10.25.0 // indirect
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
-	github.com/go-redsync/redsync/v4 v4.11.0 // indirect
+	github.com/go-redsync/redsync/v4 v4.13.0 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
 	github.com/go-viper/mapstructure/v2 v2.3.0 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
@@ -89,7 +89,7 @@ require (
 	github.com/klauspost/compress v1.17.8 // indirect
 	github.com/leebenson/conform v1.2.2 // indirect
 	github.com/leekchan/accounting v1.0.0 // indirect
-	github.com/leodido/go-urn v1.2.4 // indirect
+	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
