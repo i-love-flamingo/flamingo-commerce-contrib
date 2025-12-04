@@ -15,7 +15,7 @@ require (
 	github.com/go-test/deep v1.1.1
 	github.com/google/go-cmp v0.7.0
 	github.com/redis/go-redis/v9 v9.14.0
-	github.com/spf13/cobra v1.10.1
+	github.com/spf13/cobra v1.10.2
 	github.com/stretchr/testify v1.11.1
 	github.com/stvp/tempredis v0.0.0-20231107154819-8a695b693b9c
 	github.com/testcontainers/testcontainers-go v0.39.0
