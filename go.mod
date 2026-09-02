@@ -1,11 +1,9 @@
 module flamingo.me/flamingo-commerce-contrib
 
-go 1.24.0
-
-toolchain go1.25.7
+go 1.25.8
 
 require (
-	flamingo.me/dingo v0.3.0
+	flamingo.me/dingo v0.4.1
 	flamingo.me/flamingo-commerce/v3 v3.12.0
 	flamingo.me/flamingo/v3 v3.17.1
 	flamingo.me/form v1.1.3
@@ -16,7 +14,7 @@ require (
 	github.com/google/go-cmp v0.7.0
 	github.com/redis/go-redis/v9 v9.17.2
 	github.com/spf13/cobra v1.10.2
-	github.com/stretchr/testify v1.11.1
+	github.com/stretchr/testify v1.12.1
 	github.com/stvp/tempredis v0.0.0-20231107154819-8a695b693b9c
 	github.com/testcontainers/testcontainers-go v0.39.0
 	github.com/vektah/gqlparser/v2 v2.5.30
@@ -131,7 +129,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/sosodev/duration v1.3.1 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
-	github.com/stretchr/objx v0.5.2 // indirect
+	github.com/stretchr/objx v0.5.3 // indirect
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
 	github.com/tklauser/numcpus v0.6.1 // indirect
 	github.com/uber/jaeger-client-go v2.25.0+incompatible // indirect
@@ -154,6 +152,7 @@ require (
 	go.uber.org/automaxprocs v1.6.0 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
 	go.uber.org/zap v1.27.1 // indirect
+	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/crypto v0.44.0 // indirect
 	golang.org/x/mod v0.29.0 // indirect
 	golang.org/x/net v0.47.0 // indirect
@@ -162,6 +161,7 @@ require (
 	golang.org/x/text v0.31.0 // indirect
 	golang.org/x/tools v0.38.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
+	gonum.org/v1/gonum v0.17.0 // indirect
 	google.golang.org/api v0.152.0 // indirect
 	google.golang.org/protobuf v1.36.5 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
