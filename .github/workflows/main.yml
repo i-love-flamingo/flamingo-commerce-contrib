@@ -13,27 +13,25 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: [ '1.23', '1.24', '1.x' ]
+        go: [ 'go.mod', '1.*' ]
     name: With Go ${{ matrix.go }}
     steps:
       - uses: actions/checkout@v5
       - name: Setup Go
         uses: actions/setup-go@v6
         with:
-          go-version: ${{ matrix.go }}
+          go-version: ${{ matrix.go != 'go.mod' && matrix.go || '' }}
+          go-version-file: ${{ matrix.go == 'go.mod' && 'go.mod' || '' }}
+          check-latest: true
       - name: Get dependencies
-        env:
-          GOTOOLCHAIN: 'go1.24.9+auto'
         run: go get -v -t -d ./...
       - name: Test
-        env:
-          GOTOOLCHAIN: 'go1.24.9+auto'
         run: go test -race ./...
   static-checks:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: [ '1.x' ]
+        go: [ '1.*' ]
     name: Static checks
     steps:
       - uses: actions/checkout@v5
@@ -41,6 +39,7 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version: ${{ matrix.go }}
+          check-latest: true
       - name: Go Vet
         run: go vet ./...
       - name: Goimports
@@ -57,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: [ '1.x' ]
+        go: [ '1.*' ]
     name: Integration
     steps:
       - uses: actions/checkout@v5
@@ -65,6 +64,7 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version: ${{ matrix.go }}
+          check-latest: true
       - name: Get dependencies
         run: go get -v -t -d ./...
       - name: Generate GraphQL
