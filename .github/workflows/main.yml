@@ -54,16 +54,14 @@ jobs:
           git diff --quiet -- . ":(exclude)docs" || (echo 'generated go files are not up to date, check go generate, go.sum and go.mod' ; git diff -- . ":(exclude)docs"; exit 1)
   integration-tests:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        go: [ '1.*' ]
     name: Integration
     steps:
       - uses: actions/checkout@v5
       - name: Setup Go
         uses: actions/setup-go@v6
         with:
-          go-version: ${{ matrix.go }}
+          # NOTE: use the go.mod version, gqlgen fails to generate on the newest Go.
+          go-version-file: go.mod
           check-latest: true
       - name: Get dependencies
         run: go get -v -t -d ./...
