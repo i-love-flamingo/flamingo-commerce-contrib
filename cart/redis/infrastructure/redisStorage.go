@@ -138,7 +138,7 @@ func (r *RedisStorage) GetCart(ctx context.Context, id string) (*cartDomain.Cart
 func (r *RedisStorage) HasCart(ctx context.Context, id string) bool {
 	cmd := r.client.Exists(context.WithoutCancel(ctx), r.keyPrefix+id)
 	if err := cmd.Err(); err != nil {
-		r.logger.WithContext(ctx).WithField(flamingo.LogKeyModule, "RedisStorage").Warn(fmt.Errorf("HasCart: couldn't check redis exists: %w returned value: %q", err, cmd.Val()))
+		r.logger.WithContext(ctx).WithField(flamingo.LogKeyModule, "RedisStorage").Warn(fmt.Errorf("HasCart: couldn't check redis exists: %w returned value: %d", err, cmd.Val()))
 
 		return false
 	}
