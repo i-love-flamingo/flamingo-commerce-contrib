@@ -10,7 +10,7 @@ require (
 	flamingo.me/graphql v1.12.1
 	github.com/99designs/gqlgen v0.17.66
 	github.com/gavv/httpexpect/v2 v2.17.0
-	github.com/go-test/deep v1.1.1
+	github.com/go-test/deep v1.1.2
 	github.com/google/go-cmp v0.7.0
 	github.com/redis/go-redis/v9 v9.17.2
 	github.com/spf13/cobra v1.10.2
