@@ -5,6 +5,15 @@
     ":semanticCommitTypeAll(chore)"
   ],
   "constraintsFiltering": "strict",
+  "packageRules": [
+    {
+      "description": "contrib compiles generated code from flamingo.me/graphql and flamingo-commerce, so gqlgen must match their version. Updating those modules raises gqlgen as needed, so skip direct gqlgen updates.",
+      "matchPackageNames": [
+        "github.com/99designs/gqlgen"
+      ],
+      "enabled": false
+    }
+  ],
   "customManagers": [
     {
       "customType": "regex",
